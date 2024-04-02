@@ -7,14 +7,16 @@
 #include <iostream>
 #include <algorithm>
 
-MainWindow::MainWindow(int w, int h, const std::string& title)
+using namespace std;
+
+MainWindow::MainWindow(int w, int h, const string& title)
     : width{w}, height{h}, gWindow{nullptr}, gRenderer{nullptr}
 {
     int res = SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    if (res < 0) {throw SDLException(std::string("SDL could not initialize! SDL Error: ") + SDL_GetError());}
+    if (res < 0) { logErrorAndExit("SDL could not initialize! SDL Error: ", SDL_GetError()); }
 
     res = SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
-    if (!res) {std::cerr << "Warning: Linear texture filtering not enabled!" << std::endl;}
+    if (!res) {cerr << "Warning: Linear texture filtering not enabled!" << endl;}
 
     gWindow = SDL_CreateWindow( title.c_str(),
                                 SDL_WINDOWPOS_UNDEFINED,
@@ -24,33 +26,33 @@ MainWindow::MainWindow(int w, int h, const std::string& title)
                                 SDL_WINDOW_SHOWN );
 
     if (gWindow == nullptr) {
-        throw SDLException(std::string("Could not create Window! SDL Error: ") + SDL_GetError());
+        logErrorAndExit("Could not create Window! SDL Error: ", SDL_GetError());
     }
 
     gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
     if (gRenderer == nullptr) {
-        throw SDLException(std::string("Renderer could not be created! SDL Error: ") + SDL_GetError());
+        logErrorAndExit("Renderer could not be created! SDL Error: ", SDL_GetError());
     }
 
     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
     res = IMG_INIT_PNG;
     if( !( IMG_Init( res ) & res ) ) {
-        throw SDLException(std::string("SDL_image could not initialize! SDL_image Error: ") + IMG_GetError());
+        logErrorAndExit("SDL_image could not initialize! SDL_image Error: ", IMG_GetError());
     }
 
     res = TTF_Init();
     if (res == -1) {
-        throw SDLException(std::string("SDL_ttf could not initialize! SDL_ttf Error: ") + TTF_GetError());
+        logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ", TTF_GetError());
     }
 
     res = Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
     if (res < 0) {
-        throw SDLException(std::string("SDL_mixer could not initialize! SDL_mixer Error: ") + Mix_GetError());
+        logErrorAndExit("SDL_mixer could not initialize! SDL_mixer Error: ", Mix_GetError());
     }
 }
 
-MainWindow::~MainWindow() noexcept
+MainWindow::~MainWindow()
 {
     SDL_DestroyRenderer( gRenderer );
     SDL_DestroyWindow( gWindow );
@@ -62,11 +64,11 @@ MainWindow::~MainWindow() noexcept
 }
 
 
-void MainWindow::setIcon(const std::string& path)
+void MainWindow::setIcon(const string& path)
 {
     SDL_Surface* icon = IMG_Load(path.c_str());
     if (icon == nullptr) {
-        throw SDLException(std::string("Could not load Icon! SDL_image Error: ") + IMG_GetError());
+        logErrorAndExit("Could not load Icon! SDL_image Error: ", IMG_GetError());
     }
     SDL_SetWindowIcon(gWindow, icon);
     SDL_FreeSurface(icon); // icon is no longer required

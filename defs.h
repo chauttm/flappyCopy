@@ -1,5 +1,5 @@
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#ifndef DEFS_H
+#define DEFS_H
 
 #define WINDOW_TITLE "Flappy Bird Remake"
 #define WINDOW_ICON_PATH "./flappy_assets/flappy.png"
@@ -28,4 +28,4 @@ enum class GameStates {
     Null
 };
 
-#endif // GAMESTATE_H
+#endif // DEFS_H

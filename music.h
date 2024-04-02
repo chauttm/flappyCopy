@@ -9,12 +9,10 @@ class Music {
 public:
     Music();
     Music(const std::string& path);
-    ~Music() noexcept;
+    ~Music() ;
 
     Music(const Music&) = delete;
     Music& operator=(const Music&) = delete;
-    Music(Music&&) noexcept = default;
-    Music& operator=(Music&&) noexcept = default;
 
     void play();
     void pause();
@@ -26,12 +24,10 @@ class Sound {
 public:
     Sound();
     Sound(const std::string& path);
-    ~Sound() noexcept;
+    ~Sound() ;
 
     Sound(const Sound&) = delete;
     Sound& operator=(const Sound&) = delete;
-    Sound(Sound&&) noexcept = default;
-    Sound& operator=(Sound&&) noexcept = default;
 
     void play();
 };

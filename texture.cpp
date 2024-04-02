@@ -10,11 +10,7 @@ Texture::Texture(SDL_Renderer* renderer)
     : mTexture{nullptr},
       gRenderer{renderer},
       mWidth{0}, mHeight{0}
-{
-    if (gRenderer == nullptr) {
-        throw SDLException("Could not locate MainWindow renderer");
-    }
-}
+{}
 
 Texture::~Texture()
 {
@@ -27,7 +23,7 @@ void Texture::loadFromFile( const std::string& path )
 
     mTexture = IMG_LoadTexture(gRenderer, path.c_str());
     if( mTexture == nullptr ) {
-        throw SDLException(std::string("Unable to create texture from ") + path + " : " + SDL_GetError());
+        logErrorAndExit("Unable to create texture from " + path, SDL_GetError());
     }
     SDL_QueryTexture(mTexture, NULL, NULL, &mWidth, &mHeight);
 }
@@ -38,12 +34,12 @@ void Texture::loadFromRenderedText( const std::string& textureText, Font& f, SDL
 
     SDL_Surface* textSurface = TTF_RenderText_Solid( f.getFont(), textureText.c_str(), textColor );
     if( textSurface == nullptr ) {
-        throw SDLException(std::string("Unable to render text surface! SDL_ttf Error: ") + TTF_GetError());
+        logErrorAndExit("Unable to render text surface! SDL_ttf Error: ", TTF_GetError());
     }
 
     mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
     if( mTexture == nullptr ) {
-        throw SDLException(std::string("Unable to create texture from text :") + SDL_GetError());
+        logErrorAndExit("Unable to create texture from text :", SDL_GetError());
     }
 
     mWidth = textSurface->w;

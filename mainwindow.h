@@ -12,7 +12,7 @@ class MainWindow final {
 
 public:
     MainWindow(int w, int h, const std::string& title = " ");
-    ~MainWindow() noexcept;
+    ~MainWindow();
     MainWindow(const MainWindow&) = delete;
     MainWindow& operator=(const MainWindow&) = delete;
 
@@ -20,10 +20,10 @@ public:
     void clear() const;
     void update() const;
 
-    SDL_Renderer* getRenderer() const noexcept {return gRenderer;}
-    SDL_Window*     getWindow() const noexcept {return gWindow;  }
-    int              getWidth() const noexcept {return width;    }
-    int             getHeight() const noexcept {return height;   }
+    SDL_Renderer* getRenderer() const {return gRenderer;}
+    SDL_Window*     getWindow() const {return gWindow;  }
+    int              getWidth() const {return width;    }
+    int             getHeight() const {return height;   }
 };
 
 #endif // MAINWINDOW_H

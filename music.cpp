@@ -7,7 +7,7 @@ Music::Music(const std::string& path) :Music()
 {
     gMusic = Mix_LoadMUS(path.c_str());
     if (gMusic == nullptr) {
-        throw SDLException(std::string("Could not load music! SDL_mixer Error: ") + Mix_GetError());
+        logErrorAndExit("Could not load music! SDL_mixer Error: ", Mix_GetError());
     }
 }
 
@@ -50,7 +50,7 @@ Sound::Sound(const std::string& path)
 {
     gChunk = Mix_LoadWAV(path.c_str());
     if (gChunk == nullptr) {
-        throw SDLException(std::string("Could not load sound! SDL_mixer Error: ") + Mix_GetError());
+        logErrorAndExit("Could not load sound! SDL_mixer Error: ", Mix_GetError());
     }
 }
 
